@@ -57,3 +57,33 @@ SELECT *
 FROM CountryPayments
 WHERE Total_Payment > 500000
 ORDER BY Total_Payment DESC;
+
+/*=========================================================
+Query 4
+Business Question:
+Which vendors have total payments above the average
+vendor total payment?
+=========================================================*/
+
+WITH VendorPayments AS
+(
+    SELECT
+        v.vendor_id_num,
+        v.vendor_name,
+        SUM(p.payment_amount_num) AS Total_Payment
+    FROM Vendors v
+    JOIN Payments p
+    ON v.vendor_id_num = p.vendor_id_num
+    GROUP BY
+        v.vendor_id_num,
+        v.vendor_name
+)
+
+SELECT *
+FROM VendorPayments
+WHERE Total_Payment >
+(
+    SELECT AVG(Total_Payment)
+    FROM VendorPayments
+)
+ORDER BY Total_Payment DESC;
