@@ -1,0 +1,1 @@
+-- SQL queries for Vendor Payment Analysis
