@@ -35,3 +35,25 @@ LEFT JOIN Payments p
 ON v.vendor_id_num = p.vendor_id_num
 WHERE p.vendor_id_num IS NULL
 ORDER BY v.vendor_name;
+
+/*=========================================================
+Query 3
+Business Question:
+Which countries have received more than 500,000 in total payments?
+=========================================================*/
+
+WITH CountryPayments AS
+(
+    SELECT
+        v.country,
+        SUM(p.payment_amount_num) AS Total_Payment
+    FROM Vendors v
+    JOIN Payments p
+    ON v.vendor_id_num = p.vendor_id_num
+    GROUP BY v.country
+)
+
+SELECT *
+FROM CountryPayments
+WHERE Total_Payment > 500000
+ORDER BY Total_Payment DESC;
