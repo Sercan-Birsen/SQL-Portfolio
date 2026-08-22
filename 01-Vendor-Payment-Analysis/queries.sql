@@ -87,3 +87,24 @@ WHERE Total_Payment >
     FROM VendorPayments
 )
 ORDER BY Total_Payment DESC;
+
+/*=========================================================
+Query 5
+Business Question:
+Provide a payment summary for each country, including the
+number of payments, total payment amount, minimum payment,
+maximum payment, and average payment.
+=========================================================*/
+
+SELECT
+    v.country,
+    COUNT(p.payment_id_num) AS Payment_Count,
+    SUM(p.payment_amount_num) AS Total_Payment,
+    MIN(p.payment_amount_num) AS Minimum_Payment,
+    MAX(p.payment_amount_num) AS Maximum_Payment,
+    ROUND(AVG(p.payment_amount_num), 2) AS Average_Payment
+FROM Vendors v
+JOIN Payments p
+ON v.vendor_id_num = p.vendor_id_num
+GROUP BY v.country
+ORDER BY Total_Payment DESC;
