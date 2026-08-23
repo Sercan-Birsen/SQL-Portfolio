@@ -108,3 +108,38 @@ JOIN Payments p
 ON v.vendor_id_num = p.vendor_id_num
 GROUP BY v.country
 ORDER BY Total_Payment DESC;
+
+/*=========================================================
+Query 6
+Business Question:
+Show the top 3 highest payment transactions within each
+country using a window function.
+=========================================================*/
+
+WITH RankedPayments AS
+(
+    SELECT
+        v.country,
+        v.vendor_name,
+        p.payment_amount_num,
+        RANK() OVER
+        (
+            PARTITION BY v.country
+            ORDER BY p.payment_amount_num DESC
+        ) AS Payment_Rank
+    FROM Vendors v
+    JOIN Payments p
+    ON v.vendor_id_num = p.vendor_id_num
+)
+
+SELECT
+    country,
+    vendor_name,
+    payment_amount_num,
+    Payment_Rank
+FROM RankedPayments
+WHERE Payment_Rank <= 3
+ORDER BY
+    country,
+    Payment_Rank,
+    payment_amount_num DESC;
