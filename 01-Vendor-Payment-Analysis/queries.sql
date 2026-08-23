@@ -156,12 +156,15 @@ WITH VendorPayments AS
 (
     SELECT
         v.vendor_name,
+        p.payment_id_num,
         p.payment_date,
         p.payment_amount_num AS Payment_Amount,
         LAG(p.payment_amount_num) OVER
         (
             PARTITION BY v.vendor_id_num
-            ORDER BY p.payment_date
+            ORDER BY
+                p.payment_date,
+                p.payment_id_num
         ) AS Previous_Payment
     FROM Vendors v
     JOIN Payments p
@@ -170,6 +173,7 @@ WITH VendorPayments AS
 
 SELECT
     vendor_name,
+    payment_id_num,
     payment_date,
     Payment_Amount,
     Previous_Payment,
@@ -177,4 +181,5 @@ SELECT
 FROM VendorPayments
 ORDER BY
     vendor_name,
-    payment_date DESC;
+    payment_date DESC,
+    payment_id_num DESC;
