@@ -143,3 +143,38 @@ ORDER BY
     country,
     Payment_Rank,
     payment_amount_num DESC;
+
+/*=========================================================
+Query 7
+Business Question:
+For each vendor, display every payment together with the
+previous payment and calculate the difference between them
+using the LAG() window function.
+=========================================================*/
+
+WITH VendorPayments AS
+(
+    SELECT
+        v.vendor_name,
+        p.payment_date,
+        p.payment_amount_num AS Payment_Amount,
+        LAG(p.payment_amount_num) OVER
+        (
+            PARTITION BY v.vendor_id_num
+            ORDER BY p.payment_date
+        ) AS Previous_Payment
+    FROM Vendors v
+    JOIN Payments p
+    ON v.vendor_id_num = p.vendor_id_num
+)
+
+SELECT
+    vendor_name,
+    payment_date,
+    Payment_Amount,
+    Previous_Payment,
+    (Payment_Amount - Previous_Payment) AS Difference_From_Previous_Payment
+FROM VendorPayments
+ORDER BY
+    vendor_name,
+    payment_date DESC;
