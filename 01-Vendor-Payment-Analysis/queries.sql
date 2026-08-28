@@ -183,3 +183,58 @@ ORDER BY
     vendor_name,
     payment_date DESC,
     payment_id_num DESC;
+
+/*=========================================================
+Query 8
+Business Question:
+Create a financial payment summary report that displays
+every payment together with the vendor's running total,
+total payments, highest payment, lowest payment, and
+average payment without collapsing individual records.
+=========================================================*/
+
+SELECT
+    v.vendor_name,
+    p.payment_date,
+    p.payment_amount_num,
+
+    SUM(p.payment_amount_num) OVER
+    (
+        PARTITION BY v.vendor_id_num
+        ORDER BY
+            p.payment_date,
+            p.payment_id_num
+    ) AS Running_Total,
+
+    SUM(p.payment_amount_num) OVER
+    (
+        PARTITION BY v.vendor_id_num
+    ) AS Total_Payments,
+
+    MAX(p.payment_amount_num) OVER
+    (
+        PARTITION BY v.vendor_id_num
+    ) AS Highest_Payment,
+
+    MIN(p.payment_amount_num) OVER
+    (
+        PARTITION BY v.vendor_id_num
+    ) AS Lowest_Payment,
+
+    ROUND
+    (
+        AVG(p.payment_amount_num) OVER
+        (
+            PARTITION BY v.vendor_id_num
+        ),
+        2
+    ) AS Average_Payment
+
+FROM Vendors v
+JOIN Payments p
+ON v.vendor_id_num = p.vendor_id_num
+
+ORDER BY
+    v.vendor_name,
+    p.payment_date,
+    p.payment_id_num;
