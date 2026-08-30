@@ -147,25 +147,35 @@ ORDER BY
 /*=========================================================
 Query 7
 Business Question:
-For each vendor, display every payment together with the
-previous payment and calculate the difference between them
-using the LAG() window function.
+Generate a payment history report showing each payment
+alongside the previous payment and previous payment date
+for every vendor to support payment trend analysis.
 =========================================================*/
 
-WITH VendorPayments AS
+WITH VendorPayment AS
 (
     SELECT
         v.vendor_name,
         p.payment_id_num,
         p.payment_date,
-        p.payment_amount_num AS Payment_Amount,
+        p.payment_amount_num,
+
         LAG(p.payment_amount_num) OVER
         (
             PARTITION BY v.vendor_id_num
             ORDER BY
                 p.payment_date,
                 p.payment_id_num
-        ) AS Previous_Payment
+        ) AS Previous_Payment,
+
+        LAG(p.payment_date) OVER
+        (
+            PARTITION BY v.vendor_id_num
+            ORDER BY
+                p.payment_date,
+                p.payment_id_num
+        ) AS Previous_Payment_Date
+
     FROM Vendors v
     JOIN Payments p
     ON v.vendor_id_num = p.vendor_id_num
@@ -173,12 +183,12 @@ WITH VendorPayments AS
 
 SELECT
     vendor_name,
-    payment_id_num,
     payment_date,
-    Payment_Amount,
+    payment_amount_num,
+    Previous_Payment_Date,
     Previous_Payment,
-    (Payment_Amount - Previous_Payment) AS Difference_From_Previous_Payment
-FROM VendorPayments
+    (payment_amount_num - Previous_Payment) AS Payment_Difference
+FROM VendorPayment
 ORDER BY
     vendor_name,
     payment_date DESC,
