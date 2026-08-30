@@ -279,3 +279,59 @@ WHERE
     AND payment_amount_num > Avg_Payment
 ORDER BY
     payment_amount_num DESC;
+
+/*=========================================================
+Query 10
+Business Question:
+Identify vendors whose latest payment increased by at
+least 20% compared to their previous payment.
+=========================================================*/
+
+WITH VendorPayments AS
+(
+    SELECT
+        v.vendor_name,
+        p.payment_id_num,
+        p.payment_date,
+        p.payment_amount_num,
+
+        LAG(p.payment_amount_num) OVER
+        (
+            PARTITION BY v.vendor_id_num
+            ORDER BY
+                p.payment_date,
+                p.payment_id_num
+        ) AS Previous_Payment,
+
+        ROW_NUMBER() OVER
+        (
+            PARTITION BY v.vendor_id_num
+            ORDER BY
+                p.payment_date DESC,
+                p.payment_id_num DESC
+        ) AS Payment_Rank
+
+    FROM Vendors v
+    JOIN Payments p
+    ON v.vendor_id_num = p.vendor_id_num
+)
+
+SELECT
+    vendor_name,
+    payment_id_num,
+    payment_date,
+    payment_amount_num AS Latest_Payment,
+    Previous_Payment,
+    (payment_amount_num - Previous_Payment) AS Increase_Amount,
+    ROUND
+    (
+        ((payment_amount_num - Previous_Payment)
+        / Previous_Payment) * 100,
+        2
+    ) AS Increase_Percentage
+FROM VendorPayments
+WHERE
+    Payment_Rank = 1
+    AND payment_amount_num >= Previous_Payment * 1.20
+ORDER BY
+    Increase_Percentage DESC;
