@@ -238,3 +238,44 @@ ORDER BY
     v.vendor_name,
     p.payment_date,
     p.payment_id_num;
+
+/*=========================================================
+Query 9
+Business Question:
+Identify vendors whose most recent payment exceeds
+their historical average payment.
+=========================================================*/
+
+WITH Latest_Payment AS
+(
+    SELECT
+        v.vendor_name,
+        p.payment_amount_num,
+        ROW_NUMBER() OVER
+        (
+            PARTITION BY p.vendor_id_num
+            ORDER BY
+                p.payment_date DESC,
+                p.payment_id_num DESC
+        ) AS Payment_Rank,
+
+        AVG(p.payment_amount_num) OVER
+        (
+            PARTITION BY p.vendor_id_num
+        ) AS Avg_Payment
+
+    FROM Vendors v
+    JOIN Payments p
+    ON v.vendor_id_num = p.vendor_id_num
+)
+
+SELECT
+    vendor_name,
+    payment_amount_num,
+    Avg_Payment
+FROM Latest_Payment
+WHERE
+    Payment_Rank = 1
+    AND payment_amount_num > Avg_Payment
+ORDER BY
+    payment_amount_num DESC;
