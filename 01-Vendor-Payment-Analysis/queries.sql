@@ -325,8 +325,10 @@ SELECT
     (payment_amount_num - Previous_Payment) AS Increase_Amount,
     ROUND
     (
-        ((payment_amount_num - Previous_Payment)
-        / Previous_Payment) * 100,
+        (
+            (payment_amount_num - Previous_Payment)
+            / NULLIF(Previous_Payment, 0)
+        ) * 100,
         2
     ) AS Increase_Percentage
 FROM VendorPayments
