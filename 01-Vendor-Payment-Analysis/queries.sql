@@ -347,3 +347,44 @@ WHERE
     AND payment_amount_num >= Previous_Payment * 1.20
 ORDER BY
     Increase_Percentage DESC;
+
+/*=========================================================
+Query 11
+Business Question:
+Identify vendors whose latest payment is also their
+highest payment ever.
+=========================================================*/
+
+WITH VendorPayment AS
+(
+    SELECT
+        v.vendor_name,
+        p.payment_date,
+        MAX(p.payment_amount_num) OVER
+        (
+            PARTITION BY v.vendor_id_num
+        ) AS Highest_Payment,
+        p.payment_amount_num AS Latest_Payment,
+        ROW_NUMBER() OVER
+        (
+            PARTITION BY v.vendor_id_num
+            ORDER BY
+                p.payment_date DESC,
+                p.payment_id_num DESC
+        ) AS Payment_Rank_Date
+    FROM Vendors v
+    JOIN Payments p
+    ON v.vendor_id_num = p.vendor_id_num
+)
+
+SELECT
+    vendor_name,
+    payment_date,
+    Highest_Payment,
+    Latest_Payment
+FROM VendorPayment
+WHERE
+    Payment_Rank_Date = 1
+    AND Highest_Payment = Latest_Payment
+ORDER BY
+    Highest_Payment DESC;
