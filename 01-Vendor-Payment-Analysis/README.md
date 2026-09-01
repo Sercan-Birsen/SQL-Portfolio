@@ -35,6 +35,7 @@ This project answers the following business questions:
 9. Identify vendors whose latest payment exceeds their historical average payment.
 10. Identify vendors whose latest payment increased by at least 20% compared to their previous payment.
 11. Identify vendors whose latest payment is also their highest payment ever.
+12. Contact vendors whose total payments exceed the average vendor total, including contact information and payment summary.
 
 ---
 
