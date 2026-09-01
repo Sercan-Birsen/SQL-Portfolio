@@ -125,6 +125,6 @@ Vendor-Payment-Analysis/
 
 ## Status
 
-✅ 11 business-oriented SQL reporting scenarios completed.
+✅ 12 business-oriented SQL reporting scenarios completed.
 
 The repository will continue expanding with additional SQL case studies, Python (Pandas), and Power BI projects.
