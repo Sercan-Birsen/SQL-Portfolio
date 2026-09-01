@@ -388,3 +388,51 @@ WHERE
     AND Highest_Payment = Latest_Payment
 ORDER BY
     Highest_Payment DESC;
+
+/*=========================================================
+Query 12
+Business Question:
+Finance wants to contact vendors whose total payments
+exceed the average vendor total. Display the vendor name,
+country, primary contact, email, department, total payment,
+average payment amount, and number of payments.
+=========================================================*/
+
+WITH VendorPayments AS
+(
+    SELECT
+        v.vendor_id_num,
+        v.vendor_name,
+        v.country,
+        SUM(p.payment_amount_num) AS Total_Payment,
+        ROUND(AVG(p.payment_amount_num), 2) AS Average_Payment,
+        COUNT(p.payment_id_num) AS Number_Of_Payments
+    FROM Vendors v
+    JOIN Payments p
+        ON v.vendor_id_num = p.vendor_id_num
+    GROUP BY
+        v.vendor_id_num,
+        v.vendor_name,
+        v.country
+)
+
+SELECT
+    vp.vendor_name,
+    vp.country,
+    vc.contact_name,
+    vc.email,
+    vc.department,
+    vp.Number_Of_Payments,
+    vp.Total_Payment,
+    vp.Average_Payment
+FROM VendorPayments vp
+LEFT JOIN Vendor_Contacts vc
+    ON vp.vendor_id_num = vc.vendor_id_num
+WHERE vp.Total_Payment >
+(
+    SELECT AVG(Total_Payment)
+    FROM VendorPayments
+)
+ORDER BY
+    vp.Total_Payment DESC,
+    vp.vendor_name;
