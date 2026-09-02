@@ -2,33 +2,78 @@
 
 Welcome to my SQL portfolio.
 
-This repository contains SQL projects focused on real-world business scenarios, Master Data Management (MDM), data quality, reporting, and analytics.
+This repository showcases SQL solutions to realistic business problems inspired by finance, master data management (MDM), and business analytics. The projects demonstrate practical SQL techniques commonly used by Data Analysts and Master Data Analysts for reporting, data validation, and decision support.
+
+---
 
 ## Skills Demonstrated
 
-- SQL
-- Joins (INNER, LEFT)
-- Aggregate Functions
-- GROUP BY & HAVING
-- CASE Statements
-- Views
+### SQL Fundamentals
+- SELECT
+- WHERE
+- ORDER BY
+- DISTINCT
+- GROUP BY
+- HAVING
+- CASE
+
+### Joins
+- INNER JOIN
+- LEFT JOIN
+
+### Aggregate Functions
+- SUM()
+- AVG()
+- COUNT()
+- MIN()
+- MAX()
+
+### Window Functions
+- ROW_NUMBER()
+- RANK()
+- DENSE_RANK()
+- LAG()
+- LEAD()
+- SUM() OVER()
+- AVG() OVER()
+- MAX() OVER()
+
+### Advanced SQL
 - Common Table Expressions (CTEs)
-- Data Quality Analysis
-- Business Reporting
+- Nested Subqueries
+- EXISTS / NOT EXISTS
+- IN / NOT IN
+- NULLIF()
+
+---
 
 ## Projects
 
 ### 01 - Vendor Payment Analysis
-Business analysis using a relational database containing Vendors, Payments and Vendor Contacts.
 
-Topics covered:
-- Payment analysis
-- Vendor performance
+A business-oriented SQL project built on a relational database containing Vendors, Payments, and Vendor Contacts.
+
+Business scenarios include:
+
+- Vendor payment analysis
+- Vendor payment trends
+- Latest vs historical payments
+- Highest payments by vendor
+- Payment growth analysis
+- Contact reporting for high-value vendors
 - Country-level reporting
-- CTEs
-- Business reporting
-- Data aggregation
+- Window function reporting
+- Three-table joins
+- Business reporting and analytics
 
 ---
 
-More projects will be added as I continue developing my SQL, Python and Power BI skills.
+## Tools
+
+- SQLite
+- DB Browser for SQLite
+- GitHub
+
+---
+
+More SQL projects covering customer analytics, inventory analysis, and data quality will be added as the portfolio continues to grow.
