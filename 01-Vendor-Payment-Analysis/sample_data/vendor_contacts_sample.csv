@@ -1,0 +1,11 @@
+contact_id,vendor_id_num,contact_name,email,department
+1,451,Henry Wilson,henry.wilson.451@example.com,Operations
+2,275,Henry Young,henry.young.275@example.com,Operations
+3,45,James Varga,james.varga.45@example.com,Accounts Payable
+4,786,Ava Wilson,ava.wilson.786@example.com,Sales
+5,401,Victoria Kowalski,victoria.kowalski.401@example.com,Customer Service
+6,328,Zoe Martin,zoe.martin.328@example.com,Procurement
+7,978,Isabella Fischer,isabella.fischer.978@example.com,Legal
+8,482,Samuel Johnson,samuel.johnson.482@example.com,Legal
+9,226,Charlotte Varga,charlotte.varga.226@example.com,Legal
+10,524,Olivia Evans,olivia.evans.524@example.com,Sales

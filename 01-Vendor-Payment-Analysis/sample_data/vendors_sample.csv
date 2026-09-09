@@ -1,0 +1,11 @@
+vendor_id_num,vendor_name,country,status,currency,created_date
+1,Harbor Logistics 0001,United Kingdom,Active,GBP,2024-04-21
+2,Evergreen Equipment 0002,Czech Republic,Active,CZK,2022-09-02
+3,Cedar Consulting 0003,Canada,Active,CAD,2021-12-09
+4,Blue Trading 0004,Japan,Active,JPY,2021-08-27
+5,Harbor Distribution 0005,Germany,Active,EUR,2025-11-26
+6,Quantum Advisory 0006,United Kingdom,Active,GBP,2020-12-08
+7,Frontier Advisory 0007,United States,Inactive,USD,2020-05-03
+8,Meridian Consulting 0008,Czech Republic,Inactive,CZK,2023-10-24
+9,Pioneer Systems 0009,Germany,Active,EUR,2018-06-22
+10,Pioneer Solutions 0010,Japan,Active,JPY,2018-08-02
