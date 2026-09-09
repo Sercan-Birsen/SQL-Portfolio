@@ -2,13 +2,14 @@
 
 Welcome to my SQL portfolio.
 
-This repository showcases SQL solutions to realistic business problems inspired by finance, master data management (MDM), and business analytics. The projects demonstrate practical SQL techniques commonly used by Data Analysts and Master Data Analysts for reporting, data validation, and decision support.
+This repository showcases SQL solutions to realistic business problems inspired by finance, master data management (MDM), and business analytics. The projects demonstrate practical SQL techniques commonly used by Data Analysts and Master Data Analysts for reporting, data validation, trend analysis, and decision support.
 
 ---
 
 ## Skills Demonstrated
 
 ### SQL Fundamentals
+
 - SELECT
 - WHERE
 - ORDER BY
@@ -18,10 +19,12 @@ This repository showcases SQL solutions to realistic business problems inspired 
 - CASE
 
 ### Joins
+
 - INNER JOIN
 - LEFT JOIN
 
 ### Aggregate Functions
+
 - SUM()
 - AVG()
 - COUNT()
@@ -29,6 +32,7 @@ This repository showcases SQL solutions to realistic business problems inspired 
 - MAX()
 
 ### Window Functions
+
 - ROW_NUMBER()
 - RANK()
 - DENSE_RANK()
@@ -39,11 +43,15 @@ This repository showcases SQL solutions to realistic business problems inspired 
 - MAX() OVER()
 
 ### Advanced SQL
+
 - Common Table Expressions (CTEs)
 - Nested Subqueries
 - EXISTS / NOT EXISTS
 - IN / NOT IN
 - NULLIF()
+- Running totals and cumulative calculations
+- Sequential and trend analysis
+- Streak analysis
 
 ---
 
@@ -60,6 +68,7 @@ Business scenarios include:
 - Latest vs historical payments
 - Highest payments by vendor
 - Payment growth analysis
+- Increasing payment streak analysis
 - Contact reporting for high-value vendors
 - Country-level reporting
 - Window function reporting
