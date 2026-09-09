@@ -436,3 +436,164 @@ WHERE vp.Total_Payment >
 ORDER BY
     vp.Total_Payment DESC,
     vp.vendor_name;
+
+/*=========================================================
+Query 13
+Business Question:
+Finance wants to identify vendors with the longest streak
+of consecutive payments where each payment was higher than
+the previous payment. Display the vendor name, vendor ID,
+length of the longest increasing streak, start date, and
+end date. If multiple streaks have the same maximum length,
+select the most recent streak.
+=========================================================*/
+
+WITH VendorPayment AS (
+    SELECT
+        v.vendor_name,
+        v.vendor_id_num,
+        p.payment_amount_num,
+        p.payment_date,
+        p.payment_id_num,
+
+        LAG(p.payment_amount_num) OVER (
+            PARTITION BY v.vendor_id_num
+            ORDER BY p.payment_date, p.payment_id_num
+        ) AS Previous_payment
+
+    FROM Vendors v
+    JOIN Payments p
+        ON v.vendor_id_num = p.vendor_id_num
+),
+
+IncreasingTable AS (
+    SELECT
+        vendor_name,
+        vendor_id_num,
+        payment_amount_num,
+        payment_date,
+        payment_id_num,
+        Previous_payment,
+
+        CASE
+            WHEN payment_amount_num > Previous_payment
+            THEN 1
+            ELSE 0
+        END AS Is_increasing
+
+    FROM VendorPayment
+),
+
+IncreasingTable_ AS (
+    SELECT
+        vendor_name,
+        vendor_id_num,
+        payment_amount_num,
+        payment_date,
+        payment_id_num,
+        Previous_payment,
+        Is_increasing,
+
+        LAG(Is_increasing) OVER (
+            PARTITION BY vendor_id_num
+            ORDER BY payment_date, payment_id_num
+        ) AS Previous_is_increasing
+
+    FROM IncreasingTable
+),
+
+StreakTable AS (
+    SELECT
+        vendor_name,
+        vendor_id_num,
+        payment_amount_num,
+        payment_date,
+        payment_id_num,
+        Previous_payment,
+        Is_increasing,
+        Previous_is_increasing,
+
+        CASE
+            WHEN Is_increasing = 1
+                 AND (
+                     Previous_is_increasing = 0
+                     OR Previous_is_increasing IS NULL
+                 )
+            THEN 1
+            ELSE 0
+        END AS Streak_start
+
+    FROM IncreasingTable_
+),
+
+StreakTable_ AS (
+    SELECT
+        vendor_name,
+        vendor_id_num,
+        payment_id_num,
+        payment_amount_num,
+        payment_date,
+        Previous_payment,
+        Is_increasing,
+        Previous_is_increasing,
+        Streak_start,
+
+        SUM(Streak_start) OVER (
+            PARTITION BY vendor_id_num
+            ORDER BY payment_date, payment_id_num
+        ) AS Streak_ID
+
+    FROM StreakTable
+),
+
+StreakLengths AS (
+    SELECT
+        vendor_name,
+        vendor_id_num,
+        Streak_ID,
+        COUNT(*) AS Streak_Length,
+        MIN(payment_date) AS Start_Date,
+        MAX(payment_date) AS End_Date
+
+    FROM StreakTable_
+
+    WHERE Is_increasing = 1
+
+    GROUP BY
+        vendor_name,
+        vendor_id_num,
+        Streak_ID
+),
+
+RankedStreaks AS (
+    SELECT
+        vendor_name,
+        vendor_id_num,
+        Streak_ID,
+        Streak_Length,
+        Start_Date,
+        End_Date,
+
+        ROW_NUMBER() OVER (
+            PARTITION BY vendor_id_num
+            ORDER BY
+                Streak_Length DESC,
+                End_Date DESC,
+                Streak_ID DESC
+        ) AS Streak_Rank
+
+    FROM StreakLengths
+)
+
+SELECT
+    vendor_name,
+    vendor_id_num,
+    Streak_Length AS Longest_Increasing_Streak,
+    Start_Date,
+    End_Date
+
+FROM RankedStreaks
+
+WHERE Streak_Rank = 1
+
+ORDER BY Longest_Increasing_Streak DESC;
