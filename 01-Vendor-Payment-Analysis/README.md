@@ -24,18 +24,19 @@ The project uses three related tables:
 
 This project answers the following business questions:
 
-1. Summarize total payments for each vendor.
-2. Identify vendors whose total payments exceed the average vendor total.
-3. Display the top 3 highest payments by country.
-4. Identify the highest payment within each country.
-5. Generate running payment totals and vendor payment statistics.
-6. Find vendors with payments within a specified payment range.
-7. Generate a payment history report including previous payment amount and previous payment date for each vendor using `LAG()`.
-8. Create a financial payment dashboard using Window Functions.
+1. Identify countries with the highest total payment values.
+2. Identify vendors with no recorded payments.
+3. Identify countries where total payment value exceeds 500,000.
+4. Identify vendors whose total payments exceed the average vendor total.
+5. Generate a country-level payment summary including payment count, total, minimum, maximum, and average payment.
+6. Identify the top 3 payment transactions within each country.
+7. Generate payment history including the previous payment amount and previous payment date for each vendor using `LAG()`.
+8. Generate running payment totals and vendor-level payment statistics using Window Functions.
 9. Identify vendors whose latest payment exceeds their historical average payment.
 10. Identify vendors whose latest payment increased by at least 20% compared to their previous payment.
 11. Identify vendors whose latest payment is also their highest payment ever.
-12. Contact vendors whose total payments exceed the average vendor total, including contact information and payment summary.
+12. Identify high-value vendors above the average vendor total and provide their contact information and payment summary.
+13. Identify vendors with the longest streak of consecutive payment increases.
 
 ---
 
@@ -81,10 +82,12 @@ This project answers the following business questions:
 
 - Common Table Expressions (CTEs)
 - Nested Subqueries
-- Correlated Subqueries
 - IN / NOT IN
 - EXISTS / NOT EXISTS
 - NULLIF()
+- Sequential and trend analysis
+- Running totals / cumulative calculations
+- Streak analysis
 
 ---
 
@@ -98,33 +101,29 @@ This project answers the following business questions:
 
 ## Repository Structure
 
-```
-Vendor-Payment-Analysis/
+```text
+SQL-Portfolio/
 │
-├── queries.sql
-├── README.md
-├── findings.md
-├── screenshots/
-└── sample_results/
-```
-
----
-
-## Skills Demonstrated
-
-- SQL Query Development
-- Business Data Analysis
-- Financial Reporting
-- Master Data Analysis
-- Window Functions
-- Data Aggregation
-- Ranking & Trend Analysis
-- Analytical Problem Solving
-
----
-
-## Status
-
-✅ 12 business-oriented SQL reporting scenarios completed.
-
-The repository will continue expanding with additional SQL case studies, Python (Pandas), and Power BI projects.
+├── 01-Vendor-Payment-Analysis/
+│   ├── queries.sql
+│   ├── schema.sql
+│   ├── findings.md
+│   │
+│   ├── sample_data/
+│   │   ├── vendors_sample.csv
+│   │   ├── payments_sample.csv
+│   │   └── vendor_contacts_sample.csv
+│   │
+│   └── screenshots/
+│       ├── 01-database-tables.png
+│       ├── 02-country-payment-summary.png
+│       ├── 03-top-3-payments-by-country.png
+│       ├── 04a-running-payment-analysis-part1.png
+│       ├── 04b-running-payment-analysis-part2.png
+│       ├── 05a-increasing-streak-part1.png
+│       ├── 05b-increasing-streak-part2.png
+│       ├── 05c-increasing-streak-part3.png
+│       ├── 05d-increasing-streak-part4.png
+│       ├── 05e-increasing-streak-part5.png
+│       ├── 05f-increasing-streak-part6.png
+│       └── README.md
